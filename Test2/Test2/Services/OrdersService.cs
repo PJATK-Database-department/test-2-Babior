@@ -87,7 +87,14 @@ public class OrdersService : IOrdersService
         clientOrder.Comments = orderRequest.Comments;
         clientOrder.OrderDate = orderRequest.OrderDate;
         clientOrder.CompletionDate = orderRequest.CompletionDate;
+        
+        var confectionaries = _context.Confectioneries.Where(r => orderRequest.Confectioneries.Contains(r.IdConfectionery));
 
+
+        var confclorders = _context.ConfectioneryClientOrders.Where(c => orderRequest.Confectioneries.Contains(c.IdConfectionery));
+        
+        
+        
         await context.SaveChangesAsync();
     }
     

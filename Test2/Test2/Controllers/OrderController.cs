@@ -23,7 +23,7 @@ public class OrderController : ControllerBase
     }
     
     [HttpPut("/{idOrder:int}")]
-    public IActionResult UpdateOrder([FromBody] OrderDto newOrder, [FromRoute] int idOrder)
+    public IActionResult UpdateOrder([FromBody] OrderRequest newOrder, [FromRoute] int idOrder)
     {
         _orderService.UpdateOrder(newOrder, idOrder);
         return Ok();
