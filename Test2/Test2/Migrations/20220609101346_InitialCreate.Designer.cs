@@ -12,8 +12,8 @@ using Test2.Data;
 namespace Test2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220609083132_Initialcreate")]
-    partial class Initialcreate
+    [Migration("20220609101346_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,6 +43,26 @@ namespace Test2.Migrations
                     b.HasKey("IdClient");
 
                     b.ToTable("Clients");
+
+                    b.HasData(
+                        new
+                        {
+                            IdClient = 1,
+                            FirstName = "Karyna",
+                            LastName = "Bartashevich"
+                        },
+                        new
+                        {
+                            IdClient = 2,
+                            FirstName = "Nastya",
+                            LastName = "Babior"
+                        },
+                        new
+                        {
+                            IdClient = 3,
+                            FirstName = "Hanna",
+                            LastName = "Tamkovich"
+                        });
                 });
 
             modelBuilder.Entity("Test2.Entities.ClientOrder", b =>
@@ -76,6 +96,17 @@ namespace Test2.Migrations
                     b.HasIndex("EmployeeIdEmployee");
 
                     b.ToTable("ClientOrders");
+
+                    b.HasData(
+                        new
+                        {
+                            IdClientOrder = 1,
+                            ClientIdClient = 1,
+                            Comments = "No problems occured",
+                            CompletionDate = new DateTime(2022, 6, 9, 12, 13, 46, 341, DateTimeKind.Local).AddTicks(7480),
+                            EmployeeIdEmployee = 1,
+                            OrderDate = new DateTime(2022, 6, 8, 12, 13, 46, 341, DateTimeKind.Local).AddTicks(7420)
+                        });
                 });
 
             modelBuilder.Entity("Test2.Entities.Confectionery", b =>
@@ -90,12 +121,32 @@ namespace Test2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("PricePerOne")
-                        .HasColumnType("real");
+                    b.Property<decimal>("PricePerOne")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IdConfectionery");
 
                     b.ToTable("Confectioneries");
+
+                    b.HasData(
+                        new
+                        {
+                            IdConfectionery = 1,
+                            Name = "Twix",
+                            PricePerOne = 4m
+                        },
+                        new
+                        {
+                            IdConfectionery = 2,
+                            Name = "Snickers",
+                            PricePerOne = 5m
+                        },
+                        new
+                        {
+                            IdConfectionery = 3,
+                            Name = "Mars",
+                            PricePerOne = 4m
+                        });
                 });
 
             modelBuilder.Entity("Test2.Entities.ConfectioneryClientOrder", b =>
@@ -109,13 +160,32 @@ namespace Test2.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ClientOrderIdClientOrder")
+                        .HasColumnType("int");
+
                     b.Property<string>("Comments")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ConfectioneryIdConfectionery")
+                        .HasColumnType("int");
+
                     b.HasKey("IdClientOrder", "IdConfectionery");
 
+                    b.HasIndex("ClientOrderIdClientOrder");
+
+                    b.HasIndex("ConfectioneryIdConfectionery");
+
                     b.ToTable("ConfectioneryClientOrders");
+
+                    b.HasData(
+                        new
+                        {
+                            IdClientOrder = 2,
+                            IdConfectionery = 2,
+                            Amount = 3,
+                            Comments = "None"
+                        });
                 });
 
             modelBuilder.Entity("Test2.Entities.Employee", b =>
@@ -137,6 +207,26 @@ namespace Test2.Migrations
                     b.HasKey("IdEmployee");
 
                     b.ToTable("Employees");
+
+                    b.HasData(
+                        new
+                        {
+                            IdEmployee = 1,
+                            FirstName = "William",
+                            LastName = "Shakespeare"
+                        },
+                        new
+                        {
+                            IdEmployee = 2,
+                            FirstName = "Lizaveta",
+                            LastName = "Babior"
+                        },
+                        new
+                        {
+                            IdEmployee = 3,
+                            FirstName = "Iman",
+                            LastName = "Sayyadzadeh"
+                        });
                 });
 
             modelBuilder.Entity("Test2.Entities.ClientOrder", b =>
@@ -156,6 +246,27 @@ namespace Test2.Migrations
                     b.Navigation("Client");
 
                     b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("Test2.Entities.ConfectioneryClientOrder", b =>
+                {
+                    b.HasOne("Test2.Entities.ClientOrder", null)
+                        .WithMany("ConfectioneryClientOrder")
+                        .HasForeignKey("ClientOrderIdClientOrder");
+
+                    b.HasOne("Test2.Entities.Confectionery", null)
+                        .WithMany("ConfectioneryClientOrder")
+                        .HasForeignKey("ConfectioneryIdConfectionery");
+                });
+
+            modelBuilder.Entity("Test2.Entities.ClientOrder", b =>
+                {
+                    b.Navigation("ConfectioneryClientOrder");
+                });
+
+            modelBuilder.Entity("Test2.Entities.Confectionery", b =>
+                {
+                    b.Navigation("ConfectioneryClientOrder");
                 });
 #pragma warning restore 612, 618
         }

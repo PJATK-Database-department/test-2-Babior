@@ -27,6 +27,10 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.ApplyConfiguration(new ClientConfig());
+        modelBuilder.ApplyConfiguration(new EmployeeConfig());
+        modelBuilder.ApplyConfiguration(new ClientOrderConfig());
+        modelBuilder.ApplyConfiguration(new ConfectioneryConfig());
         modelBuilder.ApplyConfiguration(new ConfectioneryClientOrderConfig());
     }
     

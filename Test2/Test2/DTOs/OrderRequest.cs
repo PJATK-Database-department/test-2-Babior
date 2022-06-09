@@ -1,13 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Test2.Entities;
 
-namespace Test2.Entities;
+namespace Test2.DTOs;
 
-public class ClientOrder
+public class OrderRequest
 {
-    [Key]
-    public int IdClientOrder { get; set; }
-
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime? OrderDate { get; set; }
@@ -16,15 +14,10 @@ public class ClientOrder
     public DateTime? CompletionDate { get; set; }
 
     public string Comments { get; set; }
-
-    [ForeignKey("Client")] 
+    
     public int ClientIdClient { get; set; }
-    public virtual Client Client { get; set; } = null!;
     
-    [ForeignKey("Employee")] 
     public int EmployeeIdEmployee { get; set; }
-    public virtual Employee Employee { get; set; } = null!;
-    
-    public virtual ICollection<ConfectioneryClientOrder> ConfectioneryClientOrder { get; set; }
 
+    public List<int> Confectioneries { get; set; }
 }

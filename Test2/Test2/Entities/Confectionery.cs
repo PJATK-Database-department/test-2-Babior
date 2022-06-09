@@ -9,5 +9,7 @@ public class Confectionery
     
     public string Name { get; set; }
     
-    public float PricePerOne { get; set; }
+    public decimal PricePerOne { get; set; }
+    
+    public virtual ICollection<ConfectioneryClientOrder> ConfectioneryClientOrder { get; set; }
 }
